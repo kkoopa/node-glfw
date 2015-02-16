@@ -276,7 +276,7 @@ void TW_CALL GetCallback(void *value, void *clientData) {
 
   // build callback values
   Handle<Value> argv[1];
-  argv[0]=Undefined();
+  argv[0]=NanUndefined();
 
   TryCatch try_catch;
 
@@ -389,7 +389,7 @@ void TW_CALL SetButtonCallback(void *clientData) {
   //cout<<"  cb type: "<<cb->type<<endl;
 
   Handle<Value> argv[1];
-  argv[0]=Undefined();
+  argv[0]=NanUndefined();
 
   TryCatch try_catch;
 
