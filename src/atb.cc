@@ -245,7 +245,7 @@ void TW_CALL SetCallback(const void *value, void *clientData) {
     break;
   case TW_TYPE_DIR3F: {
     const float *val=static_cast<const float*>(value);
-    Local<Array> arr=Array::New(3);
+    Local<Array> arr = NanNew<Array>(3);
     arr->Set(0,JS_NUM(val[0]));
     arr->Set(1,JS_NUM(val[1]));
     arr->Set(2,JS_NUM(val[2]));
