@@ -16,7 +16,7 @@ void AntTweakBar::Initialize (Handle<Object> target) {
   Local<FunctionTemplate> ctor = FunctionTemplate::New(AntTweakBar::New);
   NanAssignPersistent(FunctionTemplate, constructor_template, ctor);
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
-  ctor->SetClassName(NanSymbol("AntTweakBar"));
+  ctor->SetClassName(NanNew<String>("AntTweakBar"));
 
   NODE_SET_PROTOTYPE_METHOD(ctor, "Init", Init);
   NODE_SET_PROTOTYPE_METHOD(ctor, "Terminate", Terminate);
@@ -27,8 +27,8 @@ void AntTweakBar::Initialize (Handle<Object> target) {
   NODE_SET_PROTOTYPE_METHOD(ctor, "DefineEnum", DefineEnum);
 
 #define NODE_DEFINE_CONSTANT_VALUE(target, name, value)                   \
-  (target)->Set(NanSymbol(name),                         \
-                v8::Integer::New(value),                               \
+  (target)->Set(NanNew<String>(name),                         \
+                NanNew<Integer>(value),                               \
                 static_cast<v8::PropertyAttribute>(v8::ReadOnly|v8::DontDelete))
 
   DEFINE_ATB_CONSTANT(CHAR);
@@ -51,7 +51,7 @@ void AntTweakBar::Initialize (Handle<Object> target) {
 
   //DEFINE_ATB_CONSTANT(CDSTRING);
 
-  target->Set(NanSymbol("AntTweakBar"), ctor->GetFunction());
+  target->Set(NanNew<String>("AntTweakBar"), ctor->GetFunction());
 }
 
 NAN_METHOD(AntTweakBar::New) {
@@ -160,7 +160,7 @@ void Bar::Initialize (Handle<Object> target) {
   Local<FunctionTemplate> ctor = FunctionTemplate::New(Bar::New);
   NanAssignPersistent(FunctionTemplate, constructor_template, ctor);
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
-  ctor->SetClassName(NanSymbol("Bar"));
+  ctor->SetClassName(NanNew<String>("Bar"));
 
   NODE_SET_PROTOTYPE_METHOD(ctor, "AddVar", AddVar);
   NODE_SET_PROTOTYPE_METHOD(ctor, "RemoveVar", RemoveVar);
@@ -168,7 +168,7 @@ void Bar::Initialize (Handle<Object> target) {
   NODE_SET_PROTOTYPE_METHOD(ctor, "AddButton", AddButton);
   NODE_SET_PROTOTYPE_METHOD(ctor, "AddSeparator", AddSeparator);
 
-  target->Set(NanSymbol("Bar"), ctor->GetFunction());
+  target->Set(NanNew<String>("Bar"), ctor->GetFunction());
 }
 
 NAN_METHOD(Bar::New) {
