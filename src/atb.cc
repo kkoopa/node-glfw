@@ -13,8 +13,8 @@ Persistent<FunctionTemplate> AntTweakBar::constructor_template;
 void AntTweakBar::Initialize (Handle<Object> target) {
   NanScope();
 
-  Local<FunctionTemplate> ctor = FunctionTemplate::New(AntTweakBar::New);
-  NanAssignPersistent(FunctionTemplate, constructor_template, ctor);
+  Local<FunctionTemplate> ctor = NanNew<FunctionTemplate>(AntTweakBar::New);
+  NanAssignPersistent(constructor_template, ctor);
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
   ctor->SetClassName(NanNew<String>("AntTweakBar"));
 
@@ -157,8 +157,8 @@ Persistent<FunctionTemplate> Bar::constructor_template;
 void Bar::Initialize (Handle<Object> target) {
   NanScope();
 
-  Local<FunctionTemplate> ctor = FunctionTemplate::New(Bar::New);
-  NanAssignPersistent(FunctionTemplate, constructor_template, ctor);
+  Local<FunctionTemplate> ctor = NanNew<FunctionTemplate>(Bar::New);
+  NanAssignPersistent(constructor_template, ctor);
   ctor->InstanceTemplate()->SetInternalFieldCount(1);
   ctor->SetClassName(NanNew<String>("Bar"));
 
@@ -199,8 +199,8 @@ Bar *Bar::New(TwBar *zbar)
 
   NanScope();
 
-  Local<Value> arg = Integer::NewFromUnsigned(0);
-  Local<FunctionTemplate> constructorHandle = NanPersistentToLocal(constructor_template);
+  Local<Value> arg = NanNew<Integer>(0);
+  Local<FunctionTemplate> constructorHandle = NanNew<FunctionTemplate>(constructor_template);
   Local<Object> obj = constructorHandle->GetFunction()->NewInstance(1, &arg);
 
   Bar *v8bar = ObjectWrap::Unwrap<Bar>(obj);
@@ -260,8 +260,8 @@ void TW_CALL SetCallback(const void *value, void *clientData) {
 
   TryCatch try_catch;
 
-  Local<Function> constructorHandle = NanPersistentToLocal(cb->setter);
-  constructorHandle->Call(Context::GetCurrent()->Global(), 1, argv);
+  Local<Function> constructorHandle = NanNew<Function>(cb->setter);
+  constructorHandle->Call(NanGetCurrentContext()->Global(), 1, argv);
 
   if (try_catch.HasCaught())
     FatalException(try_catch);
@@ -284,7 +284,7 @@ void TW_CALL GetCallback(void *value, void *clientData) {
   // Local<Context> ctx=Context::GetCurrent();
   // Local<Object> global=ctx->Global();
   // cout<<"global context: "<<*ctx<<" global object: "<<*global<<endl;
-  Local<Function> fct=NanPersistentToLocal(cb->getter);
+  Local<Function> fct = NanNew<Function>(cb->getter);
   // Handle<Value> name=fct->GetName();
   // String::AsciiValue str(name);
   // cout<<"getter name: "<<*str<<" callable? "<<fct->IsCallable()<<" function? "<<fct->IsFunction()<<endl;
@@ -393,8 +393,8 @@ void TW_CALL SetButtonCallback(void *clientData) {
 
   TryCatch try_catch;
 
-  Local<Function> constructorHandle = NanPersistentToLocal(cb->setter);
-  constructorHandle->Call(Context::GetCurrent()->Global(), 1, argv);
+  Local<Function> constructorHandle = NanNew<Function>(cb->setter);
+  constructorHandle->Call(NanGetCurrentContext()->Global(), 1, argv);
 
   if (try_catch.HasCaught())
     FatalException(try_catch);
@@ -414,13 +414,11 @@ NAN_METHOD(Bar::AddVar) {
   callbacks->name=strdup(*name);
   callbacks->type=type;
   if(!getter->IsUndefined()) {
-    NanInitPersistent(Function,_getter,getter);
-    NanAssignPersistent(Function, callbacks->getter, _getter);
+    NanAssignPersistent(callbacks->getter, getter);
     // cout<<"[AddVarRW] adding getter "<<endl;
   }
   if(!setter->IsUndefined()) {
-    NanInitPersistent(Function,_setter,setter);
-    NanAssignPersistent(Function, callbacks->setter, _setter);
+    NanAssignPersistent(callbacks->setter, setter);
     // cout<<"[AddVarRW] adding setter "<<endl;
   }
 
@@ -471,8 +469,7 @@ NAN_METHOD(Bar::AddButton) {
     callbacks=new CB();
     bar->cbs.push_back(callbacks);
     callbacks->name=strdup(*name);
-    NanInitPersistent(Function,_setter,cb);
-    NanAssignPersistent(Function, callbacks->setter, _setter);
+    NanAssignPersistent(callbacks->setter, cb);
   }
 
   TwAddButton(bar->bar,*name,

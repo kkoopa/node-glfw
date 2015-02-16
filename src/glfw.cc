@@ -120,8 +120,8 @@ bool windowCreated=false;
 void NAN_INLINE(CallEmitter(int argc, Handle<Value> argv[])) {
   NanScope();
   // MakeCallback(glfw_events, "emit", argc, argv);
-  if(NanPersistentToLocal(glfw_events)->Has(NanSymbol("emit"))) {
-    Local<Function> callback = NanPersistentToLocal(glfw_events)->Get(NanSymbol("emit")).As<Function>();
+  if(NanNew<Object>(glfw_events)->Has(NanNew<String>("emit"))) {
+    Local<Function> callback = NanNew<Object>(glfw_events)->Get(NanNew<String>("emit")).As<Function>();
 
     if (!callback.IsEmpty()) {
       callback->Call(Context::GetCurrent()->Global(),argc,argv);
