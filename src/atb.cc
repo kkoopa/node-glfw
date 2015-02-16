@@ -290,7 +290,7 @@ void TW_CALL GetCallback(void *value, void *clientData) {
   // cout<<"getter name: "<<*str<<" callable? "<<fct->IsCallable()<<" function? "<<fct->IsFunction()<<endl;
   // cout<<"  global has getter()? "<<global->Has(name->ToString())<<endl;
 
-  Local<Value> val=fct->Call(Context::GetCurrent()->Global(), 1, argv);
+  Local<Value> val=fct->Call(NanGetCurrentContext()->Global(), 1, argv);
 
   if (try_catch.HasCaught())
       FatalException(try_catch);

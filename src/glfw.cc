@@ -124,7 +124,7 @@ void NAN_INLINE(CallEmitter(int argc, Handle<Value> argv[])) {
     Local<Function> callback = NanNew<Object>(glfw_events)->Get(NanNew<String>("emit")).As<Function>();
 
     if (!callback.IsEmpty()) {
-      callback->Call(Context::GetCurrent()->Global(),argc,argv);
+      callback->Call(NanGetCurrentContext()->Global(),argc,argv);
     }
   }
 }
