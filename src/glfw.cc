@@ -640,8 +640,7 @@ NAN_METHOD(glfw_CreateWindow) {
 
   // Set callback functions
   // glfw_events=Persistent<Object>::New(args.This()->Get(JS_STR("events"))->ToObject());
-  NanInitPersistent(Object,_events,args.This()->Get(JS_STR("events"))->ToObject());
-  NanAssignPersistent(Object, glfw_events, _events);
+  NanAssignPersistent(glfw_events, args.This()->Get(JS_STR("events"))->ToObject());
 
   // window callbacks
   glfwSetWindowPosCallback( window, windowPosCB );
