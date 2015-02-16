@@ -365,10 +365,10 @@ void APIENTRY cursorPosCB(GLFWwindow* window, double x, double y) {
 
     Local<Array> evt = NanNew<Array>(5);
     evt->Set(JS_STR("type"),JS_STR("mousemove"));
-    evt->Set(JS_STR("pageX"),JS_INT(x));
-    evt->Set(JS_STR("pageY"),JS_INT(y));
-    evt->Set(JS_STR("x"),JS_INT(x));
-    evt->Set(JS_STR("y"),JS_INT(y));
+    evt->Set(JS_STR("pageX"),JS_NUM(x));
+    evt->Set(JS_STR("pageY"),JS_NUM(y));
+    evt->Set(JS_STR("x"),JS_NUM(x));
+    evt->Set(JS_STR("y"),JS_NUM(y));
 
     Handle<Value> argv[2] = {
       JS_STR("mousemove"), // event name
@@ -421,9 +421,9 @@ void APIENTRY scrollCB(GLFWwindow *window, double xoffset, double yoffset) {
 
     Local<Array> evt = NanNew<Array>(3);
     evt->Set(JS_STR("type"),JS_STR("mousewheel"));
-    evt->Set(JS_STR("wheelDeltaX"),JS_INT(xoffset*120));
-    evt->Set(JS_STR("wheelDeltaY"),JS_INT(yoffset*120));
-    evt->Set(JS_STR("wheelDelta"),JS_INT(yoffset*120));
+    evt->Set(JS_STR("wheelDeltaX"),JS_NUM(xoffset*120));
+    evt->Set(JS_STR("wheelDeltaY"),JS_NUM(yoffset*120));
+    evt->Set(JS_STR("wheelDelta"),JS_NUM(yoffset*120));
 
     Handle<Value> argv[2] = {
       JS_STR("mousewheel"), // event name
@@ -863,9 +863,9 @@ NAN_METHOD(GetCursorPos) {
     GLFWwindow* window = reinterpret_cast<GLFWwindow*>(handle);
     double x,y;
     glfwGetCursorPos(window, &x, &y);
-    arr->Set(JS_STR("x"),JS_INT(x));
-    arr->Set(JS_STR("y"),JS_INT(y));
     Local<Array> arr = NanNew<Array>(2);
+    arr->Set(JS_STR("x"),JS_NUM(x));
+    arr->Set(JS_STR("y"),JS_NUM(y));
     NanReturnValue(arr);
   }
   NanReturnUndefined();
