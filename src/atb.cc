@@ -112,7 +112,7 @@ NAN_METHOD(AntTweakBar::Draw) {
 NAN_METHOD(AntTweakBar::Define) {
   NanScope();
 
-  String::AsciiValue str(args[0]);
+  NanAsciiString str(args[0]);
   TwDefine(*str);
 
   NanReturnUndefined();
@@ -121,14 +121,14 @@ NAN_METHOD(AntTweakBar::Define) {
 NAN_METHOD(AntTweakBar::DefineEnum) {
   NanScope();
 
-  String::AsciiValue str(args[0]);
+  NanAsciiString str(args[0]);
   Local<Array> arr=Local<Array>::Cast(args[1]);
   int num=args[2]->IsUndefined() ? arr->Length() : args[2]->Uint32Value();
 
   TwEnumVal *vals=new TwEnumVal[num];
   for(int i=0;i<num;i++) {
     vals[i].Value=i;
-    String::AsciiValue str(arr->Get(i)->ToString());
+    NanAsciiString str(arr->Get(i)->ToString());
     vals[i].Label=strdup(*str);
     //cout<<"  Adding value: "<<i<<" = "<<*str<<endl;
   }
@@ -146,7 +146,7 @@ NAN_METHOD(AntTweakBar::DefineEnum) {
 NAN_METHOD(AntTweakBar::NewBar) {
   NanScope();
 
-  String::AsciiValue str(args[0]);
+  NanAsciiString str(args[0]);
   TwBar *bar = TwNewBar(args.Length()!=1 ? "AntTweakBar" : *str);
 
   NanReturnValue(NanObjectWrapHandle(atb::Bar::New(bar)));
@@ -404,7 +404,7 @@ void TW_CALL SetButtonCallback(void *clientData) {
 NAN_METHOD(Bar::AddVar) {
   NanScope();
   Bar *bar = ObjectWrap::Unwrap<Bar>(args.This());
-  String::AsciiValue name(args[0]);
+  NanAsciiString name(args[0]);
   uint32_t type=args[1]->Uint32Value();
   Local<Array> params=Local<Array>::Cast(args[2]);
   Local<Function> getter=Local<Function>::Cast(params->Get(JS_STR("getter")));
@@ -422,7 +422,7 @@ NAN_METHOD(Bar::AddVar) {
     // cout<<"[AddVarRW] adding setter "<<endl;
   }
 
-  String::AsciiValue def(args[3]);
+  NanAsciiString def(args[3]);
   // cout<<"[AddVarRW] name="<<*name<<" type: "<<type<<" def= "<<*def<<endl;
 
   TwAddVarCB(bar->bar,*name,(TwType) type,
@@ -436,8 +436,8 @@ NAN_METHOD(Bar::AddVar) {
 NAN_METHOD(Bar::AddSeparator) {
   NanScope();
   Bar *bar = ObjectWrap::Unwrap<Bar>(args.This());
-  String::AsciiValue name(args[0]);
-  String::AsciiValue def(args[1]);
+  NanAsciiString name(args[0]);
+  NanAsciiString def(args[1]);
   TwAddSeparator(bar->bar,args[0]->IsUndefined() ? NULL : *name,args[1]->IsUndefined() ? NULL : *def);
   NanReturnUndefined();
 }
@@ -445,7 +445,7 @@ NAN_METHOD(Bar::AddSeparator) {
 NAN_METHOD(Bar::RemoveVar) {
   NanScope();
   Bar *bar = ObjectWrap::Unwrap<Bar>(args.This());
-  String::AsciiValue name(args[0]);
+  NanAsciiString name(args[0]);
   TwRemoveVar(bar->bar,*name);
   NanReturnUndefined();
 }
@@ -460,9 +460,9 @@ NAN_METHOD(Bar::RemoveAllVars) {
 NAN_METHOD(Bar::AddButton) {
   NanScope();
   Bar *bar = ObjectWrap::Unwrap<Bar>(args.This());
-  String::AsciiValue name(args[0]);
+  NanAsciiString name(args[0]);
   Local<Function> cb=Local<Function>::Cast(args[1]);
-  String::AsciiValue def(args[2]);
+  NanAsciiString def(args[2]);
 
   CB *callbacks=NULL;
   if(!cb->IsUndefined()) {

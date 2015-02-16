@@ -920,7 +920,7 @@ NAN_METHOD(SwapInterval) {
 /* Extension support */
 NAN_METHOD(ExtensionSupported) {
   NanScope();
-  String::AsciiValue str(args[0]->ToString());
+  NanAsciiString str(args[0]->ToString());
   NanReturnValue(JS_BOOL(glfwExtensionSupported(*str)==1));
 }
 
